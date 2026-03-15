@@ -2,7 +2,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { CreditCard } from "lucide-react";
 import { markClientInstallmentPaidAction } from "@/app/actions";
-import { statusStyles } from "@/lib/crm";
+import { statusStyles } from "@/lib/support";
 import { formatCurrency } from "@/lib/utils";
 
 type PaymentRow = {

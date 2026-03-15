@@ -13,22 +13,12 @@ export function DashboardHero({ metrics }: { metrics: Metrics }) {
   return (
     <section className="hero-panel">
       <div className="hero-copy">
-        <span className="eyebrow">
-          <Sparkles size={14} />
-          Plataforma interna de IT Integral Solution
-        </span>
         <div className="hero-copy__block">
-          <p className="brand-overline">IT Integral Solution</p>
+          <span className="eyebrow">
+            <Sparkles size={14} />
+            Panel interno
+          </span>
           <h2 className="hero-title">Sistema de Administracion y Gestion</h2>
-        </div>
-        <p className="hero-text">
-          Base inicial para gestionar clientes, productos, ventas, entregas 50/50,
-          soporte mensual y métricas comerciales de distintas soluciones de software.
-        </p>
-        <div className="hero-badges">
-          <span>Robusto</span>
-          <span>Escalable</span>
-          <span>Listo para crecer</span>
         </div>
       </div>
 

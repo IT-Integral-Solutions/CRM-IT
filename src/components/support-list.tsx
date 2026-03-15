@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { LifeBuoy } from "lucide-react";
 import { markSupportInvoicePaidAction } from "@/app/actions";
-import { getSupportHealth, statusStyles } from "@/lib/crm";
+import { getSupportHealth, statusStyles } from "@/lib/support";
 import { formatCurrency } from "@/lib/utils";
 
 type SupportInvoice = {

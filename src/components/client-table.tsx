@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { Users2 } from "lucide-react";
-import { getSupportHealth, statusStyles } from "@/lib/crm";
+import { getSupportHealth, statusStyles } from "@/lib/support";
 import { formatCurrency } from "@/lib/utils";
 
 type Client = {

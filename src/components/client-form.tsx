@@ -22,7 +22,13 @@ const customerTypes = [
   { value: "company", label: "Empresa / otro rubro" },
 ];
 
-export function ClientForm({ plans }: { plans: Plan[] }) {
+export function ClientForm({
+  plans,
+  onSubmitStart,
+}: {
+  plans: Plan[];
+  onSubmitStart?: () => void;
+}) {
   const initialType = plans[0]?.customerType ?? "travel_agency";
   const initialProduct = plans[0]?.productSlug ?? "";
   const [customerType, setCustomerType] = useState(initialType);
@@ -67,7 +73,11 @@ export function ClientForm({ plans }: { plans: Plan[] }) {
         </div>
         <Plus size={18} />
       </div>
-      <form action={createClientAction} className="client-form">
+      <form
+        action={createClientAction}
+        className="client-form"
+        onSubmitCapture={() => onSubmitStart?.()}
+      >
         <label>
           Agencia o cliente
           <input name="businessName" placeholder="Ej. Patagonia Dreams" required />

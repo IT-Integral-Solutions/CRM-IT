@@ -17,13 +17,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
           <div>
             <p className="brand-overline">IT Integral Solution</p>
-            <strong>Sistema de Administracion y Gestion</strong>
+            <strong className="sidebar-brand__title">Sistema de Administracion y Gestion</strong>
           </div>
         </div>
         <SidebarNav />
         <div className="sidebar-note">
           <Orbit size={16} />
-          <p>Primera etapa operativa lista para crecer por módulos.</p>
+          <p>CRM interno de gestion comercial, clientes y soporte.</p>
         </div>
       </aside>
       <div className="app-main">

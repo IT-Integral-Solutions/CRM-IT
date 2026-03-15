@@ -21,6 +21,9 @@ Tareas realizadas:
 - Se generalizó el CRM para que TASS sea tratado como producto y no como el sistema completo.
 - Se agregaron productos base orientados por rubro para viajes, restaurantes y soluciones corporativas.
 - Se creó `requirements.txt` con prerrequisitos de entorno para levantar el CRM en otra PC.
+- Se ajustó el layout visual del sidebar y encabezados para mejorar legibilidad y proporción.
+- Se simplificó el hero del dashboard removiendo texto promocional innecesario.
+- Se mejoró el módulo de clientes con alta bajo demanda y búsqueda rápida.
 
 Pendiente inmediato:
 - Agregar autenticación y perfiles internos.
