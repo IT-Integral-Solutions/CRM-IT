@@ -1,0 +1,38 @@
+import type { Metadata } from "next";
+import { Exo_2, Rajdhani, Syne } from "next/font/google";
+import "./globals.css";
+
+const exo = Exo_2({
+  variable: "--font-exo",
+  subsets: ["latin"],
+});
+
+const rajdhani = Rajdhani({
+  variable: "--font-rajdhani",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "CRM-IT | TASS Client Operations Hub",
+  description: "CRM interno para gestión comercial, pagos y soporte mensual de TASS.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="es">
+      <body className={`${exo.variable} ${rajdhani.variable} ${syne.variable}`}>
+        {children}
+      </body>
+    </html>
+  );
+}

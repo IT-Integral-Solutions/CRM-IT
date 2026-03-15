@@ -1,0 +1,21 @@
+CRM-IT · Registro de trabajo
+
+Fecha: 2026-03-14
+
+Tareas realizadas:
+- Se inicializó un proyecto nuevo con Next.js, TypeScript y ESLint.
+- Se aisló un repositorio Git local dentro de esta carpeta para no mezclar este proyecto con el home del usuario.
+- Se definió un stack base robusto y simple de mantener: Next.js + SQLite local para la primera etapa.
+- Se creó el esquema inicial de datos para planes, clientes y facturación mensual de soporte con `better-sqlite3`.
+- Se cargaron los planes TASS Starter, Pro y Elite con sus valores de licencia y soporte mensual.
+- Se creó una semilla inicial con clientes demo para probar flujos reales.
+- Se construyó un dashboard inicial con branding de IT-Integral Solutions.
+- Se implementó un alta de cliente con creación automática del primer ciclo de soporte.
+- Se implementó una acción para marcar pagos mensuales de soporte y generar el siguiente vencimiento.
+
+Pendiente inmediato:
+- Conectar el remoto de GitHub y hacer el primer commit/push.
+- Agregar autenticación y perfiles internos.
+- Separar vistas en módulos: clientes, pagos, soporte, productos y reportes.
+- Incorporar recordatorios automáticos y alertas persistentes.
+- Definir la migración futura a PostgreSQL con ORM o query builder cuando entren usuarios internos y despliegue productivo.
