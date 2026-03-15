@@ -15,15 +15,15 @@ export function DashboardHero({ metrics }: { metrics: Metrics }) {
       <div className="hero-copy">
         <span className="eyebrow">
           <Sparkles size={14} />
-          CRM interno de IT-Integral
+          Plataforma interna de IT Integral Solution
         </span>
         <div className="hero-copy__block">
-          <p className="brand-overline">IT-Integral Solutions</p>
-          <h2 className="hero-title">TASS Client Operations Hub</h2>
+          <p className="brand-overline">IT Integral Solution</p>
+          <h2 className="hero-title">Sistema de Administracion y Gestion</h2>
         </div>
         <p className="hero-text">
-          Base inicial para gestionar clientes, ventas, entregas 50/50, soporte mensual
-          y métricas comerciales de TASS Starter, Pro y Elite.
+          Base inicial para gestionar clientes, productos, ventas, entregas 50/50,
+          soporte mensual y métricas comerciales de distintas soluciones de software.
         </p>
         <div className="hero-badges">
           <span>Robusto</span>

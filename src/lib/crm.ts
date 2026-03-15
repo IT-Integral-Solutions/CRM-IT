@@ -81,6 +81,7 @@ export function getCrmSnapshot() {
       id: plan.id,
       name: plan.name,
       slug: plan.slug,
+      productName: plan.productName,
       description: plan.description,
       clients: planClients.length,
       revenue: planClients.reduce(
@@ -100,6 +101,7 @@ export function getCrmSnapshot() {
       id: client.id,
       businessName: client.businessName,
       primaryContact: client.primaryContact,
+      productName: client.plan.productName,
       planName: client.plan.name,
       setupAmountCents: client.setupAmountCents,
       setupPaidAt: client.setupPaidAt,

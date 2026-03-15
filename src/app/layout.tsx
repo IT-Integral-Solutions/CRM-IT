@@ -20,8 +20,9 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "CRM-IT | TASS Client Operations Hub",
-  description: "CRM interno para gestión comercial, pagos y soporte mensual de TASS.",
+  title: "CRM-IT | Sistema de Administracion y Gestion",
+  description:
+    "Sistema interno para gestionar clientes, productos, pagos y soporte de IT Integral Solution.",
 };
 
 export default function RootLayout({

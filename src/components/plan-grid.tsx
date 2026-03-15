@@ -4,6 +4,7 @@ import { cn, formatCurrency } from "@/lib/utils";
 type PlanStat = {
   id: string;
   name: string;
+  productName: string;
   description: string;
   clients: number;
   revenue: number;
@@ -26,7 +27,9 @@ export function PlanGrid({ planStats }: { planStats: PlanStat[] }) {
         {planStats.map((plan) => (
           <article key={plan.id} className={cn("plan-card", `plan-card--${plan.name.toLowerCase()}`)}>
             <div className="plan-card__top">
-              <span>{plan.name}</span>
+              <span>
+                {plan.productName} · {plan.name}
+              </span>
               <strong>{formatCurrency(plan.price)}</strong>
             </div>
             <p>{plan.description}</p>

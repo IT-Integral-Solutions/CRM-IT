@@ -9,6 +9,7 @@ type PaymentRow = {
   id: string;
   businessName: string;
   primaryContact: string;
+  productName: string;
   planName: string;
   setupAmountCents: number;
   setupPaidAt: Date | null;
@@ -47,10 +48,8 @@ export function PaymentTable({ paymentRows }: { paymentRows: PaymentRow[] }) {
               <span>{row.primaryContact}</span>
             </div>
             <div>
-              <strong>{row.planName}</strong>
-              <span>
-                Soporte {row.supportDueAt ? `· vence ${format(row.supportDueAt, "dd/MM/yyyy")}` : ""}
-              </span>
+              <strong>{row.productName}</strong>
+              <span>{row.planName}</span>
             </div>
             <div className="payment-cell">
               <strong>{formatCurrency(row.setupAmountCents)}</strong>
@@ -85,6 +84,9 @@ export function PaymentTable({ paymentRows }: { paymentRows: PaymentRow[] }) {
             <div className="payment-cell">
               <strong>{formatCurrency(row.supportAmountCents)}</strong>
               <span className={statusStyles[row.supportStatus.tone]}>{row.supportStatus.label}</span>
+              <span>
+                {row.supportDueAt ? `Vence ${format(row.supportDueAt, "dd/MM/yyyy")}` : "Sin fecha"}
+              </span>
               <Link href="/soporte" className="secondary-button secondary-button--link">
                 Gestionar soporte
               </Link>

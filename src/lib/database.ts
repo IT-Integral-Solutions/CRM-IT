@@ -8,6 +8,9 @@ type PlanRow = {
   id: string;
   name: string;
   slug: string;
+  product_name: string;
+  product_slug: string;
+  customer_type: string;
   description: string;
   license_price_cents: number;
   support_price_cents: number;
@@ -61,12 +64,23 @@ function toDate(value: string | null) {
   return value ? new Date(value) : null;
 }
 
+function hasColumn(tableName: string, columnName: string) {
+  const columns = db.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{
+    name: string;
+  }>;
+
+  return columns.some((column) => column.name === columnName);
+}
+
 function initializeDatabase() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS product_plans (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
       slug TEXT NOT NULL UNIQUE,
+      product_name TEXT NOT NULL DEFAULT 'TASS',
+      product_slug TEXT NOT NULL DEFAULT 'tass',
+      customer_type TEXT NOT NULL DEFAULT 'travel_agency',
       description TEXT NOT NULL,
       license_price_cents INTEGER NOT NULL,
       support_price_cents INTEGER NOT NULL,
@@ -110,53 +124,80 @@ function initializeDatabase() {
     CREATE INDEX IF NOT EXISTS idx_support_invoices_client_due
       ON support_invoices (client_id, due_at);
   `);
+
+  if (!hasColumn("product_plans", "product_name")) {
+    db.exec("ALTER TABLE product_plans ADD COLUMN product_name TEXT NOT NULL DEFAULT 'TASS';");
+  }
+
+  if (!hasColumn("product_plans", "product_slug")) {
+    db.exec("ALTER TABLE product_plans ADD COLUMN product_slug TEXT NOT NULL DEFAULT 'tass';");
+  }
+
+  if (!hasColumn("product_plans", "customer_type")) {
+    db.exec(
+      "ALTER TABLE product_plans ADD COLUMN customer_type TEXT NOT NULL DEFAULT 'travel_agency';",
+    );
+  }
 }
 
 function seedDatabase() {
-  const existingPlans =
-    (db.prepare("SELECT COUNT(*) as count FROM product_plans").get() as { count: number })
-      .count ?? 0;
-
-  if (existingPlans > 0) {
-    return;
-  }
-
   const now = new Date();
-  const insertPlan = db.prepare(`
-    INSERT INTO product_plans (
-      id, name, slug, description, license_price_cents, support_price_cents, display_order, created_at, updated_at
-    ) VALUES (
-      @id, @name, @slug, @description, @license_price_cents, @support_price_cents, @display_order, @created_at, @updated_at
-    )
-  `);
 
-  const plans = [
+  const planSeeds = [
     {
-      id: randomUUID(),
       name: "Starter",
       slug: "starter",
+      product_name: "TASS",
+      product_slug: "tass",
+      customer_type: "travel_agency",
       description: "Captura de leads, cotización automática e itinerarios base.",
       license_price_cents: 18000,
       support_price_cents: 2000,
       display_order: 1,
     },
     {
-      id: randomUUID(),
       name: "Pro",
       slug: "pro",
+      product_name: "TASS",
+      product_slug: "tass",
+      customer_type: "travel_agency",
       description: "Incluye historial de clientes, seguimiento de pagos y dashboard comercial.",
       license_price_cents: 30000,
       support_price_cents: 3500,
       display_order: 2,
     },
     {
-      id: randomUUID(),
       name: "Elite",
       slug: "elite",
+      product_name: "TASS",
+      product_slug: "tass",
+      customer_type: "travel_agency",
       description: "Implementación personalizada, add-ons y soporte prioritario.",
       license_price_cents: 85000,
       support_price_cents: 7500,
       display_order: 3,
+    },
+    {
+      name: "Resto a medida",
+      slug: "restaurant-custom",
+      product_name: "Software para Restaurantes",
+      product_slug: "restaurant-suite",
+      customer_type: "restaurant",
+      description: "Implementación personalizada para operación gastronómica. Precio a definir.",
+      license_price_cents: 0,
+      support_price_cents: 0,
+      display_order: 4,
+    },
+    {
+      name: "Corporativo a medida",
+      slug: "business-custom",
+      product_name: "Software Corporativo",
+      product_slug: "business-suite",
+      customer_type: "company",
+      description: "Solución a medida para otros rubros y puntos de dolor específicos.",
+      license_price_cents: 0,
+      support_price_cents: 0,
+      display_order: 5,
     },
   ].map((plan) => ({
     ...plan,
@@ -164,11 +205,75 @@ function seedDatabase() {
     updated_at: timestamp(now),
   }));
 
-  for (const plan of plans) {
-    insertPlan.run(plan);
+  for (const plan of planSeeds) {
+    const existingPlan = db
+      .prepare("SELECT id FROM product_plans WHERE slug = ?")
+      .get(plan.slug) as { id: string } | undefined;
+
+    if (existingPlan) {
+      db.prepare(`
+        UPDATE product_plans
+        SET
+          name = ?,
+          product_name = ?,
+          product_slug = ?,
+          customer_type = ?,
+          description = ?,
+          license_price_cents = ?,
+          support_price_cents = ?,
+          display_order = ?,
+          updated_at = ?
+        WHERE slug = ?
+      `).run(
+        plan.name,
+        plan.product_name,
+        plan.product_slug,
+        plan.customer_type,
+        plan.description,
+        plan.license_price_cents,
+        plan.support_price_cents,
+        plan.display_order,
+        timestamp(now),
+        plan.slug,
+      );
+    } else {
+      db.prepare(`
+        INSERT INTO product_plans (
+          id, name, slug, product_name, product_slug, customer_type, description,
+          license_price_cents, support_price_cents, display_order, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).run(
+        randomUUID(),
+        plan.name,
+        plan.slug,
+        plan.product_name,
+        plan.product_slug,
+        plan.customer_type,
+        plan.description,
+        plan.license_price_cents,
+        plan.support_price_cents,
+        plan.display_order,
+        plan.created_at,
+        plan.updated_at,
+      );
+    }
   }
 
-  const [starter, pro, elite] = plans;
+  db.exec(`
+    UPDATE product_plans SET product_name = 'TASS', product_slug = 'tass', customer_type = 'travel_agency'
+    WHERE slug IN ('starter', 'pro', 'elite');
+  `);
+
+  const existingClientCount =
+    (db.prepare("SELECT COUNT(*) as count FROM clients").get() as { count: number }).count ?? 0;
+
+  if (existingClientCount > 0) {
+    return;
+  }
+
+  const starter = db.prepare("SELECT * FROM product_plans WHERE slug = 'starter'").get() as PlanRow;
+  const pro = db.prepare("SELECT * FROM product_plans WHERE slug = 'pro'").get() as PlanRow;
+  const elite = db.prepare("SELECT * FROM product_plans WHERE slug = 'elite'").get() as PlanRow;
 
   const insertClient = db.prepare(`
     INSERT INTO clients (
@@ -280,6 +385,9 @@ function mapPlan(row: PlanRow) {
     id: row.id,
     name: row.name,
     slug: row.slug,
+    productName: row.product_name,
+    productSlug: row.product_slug,
+    customerType: row.customer_type,
     description: row.description,
     licensePriceCents: row.license_price_cents,
     supportPriceCents: row.support_price_cents,

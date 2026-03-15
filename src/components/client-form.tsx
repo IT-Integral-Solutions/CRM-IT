@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { addDays, format } from "date-fns";
 import { Plus } from "lucide-react";
 import { createClientAction } from "@/app/actions";
@@ -6,11 +9,55 @@ import { formatCurrency } from "@/lib/utils";
 type Plan = {
   id: string;
   name: string;
+  productName: string;
+  productSlug: string;
+  customerType: string;
   licensePriceCents: number;
   supportPriceCents: number;
 };
 
+const customerTypes = [
+  { value: "travel_agency", label: "Agencia de viajes" },
+  { value: "restaurant", label: "Restaurante" },
+  { value: "company", label: "Empresa / otro rubro" },
+];
+
 export function ClientForm({ plans }: { plans: Plan[] }) {
+  const initialType = plans[0]?.customerType ?? "travel_agency";
+  const initialProduct = plans[0]?.productSlug ?? "";
+  const [customerType, setCustomerType] = useState(initialType);
+  const [productSlug, setProductSlug] = useState(initialProduct);
+  const [planId, setPlanId] = useState(plans[0]?.id ?? "");
+
+  const productOptions = plans.filter(
+    (plan, index, array) =>
+      plan.customerType === customerType &&
+      array.findIndex((candidate) => candidate.productSlug === plan.productSlug) === index,
+  );
+
+  const filteredPlans = plans.filter(
+    (plan) => plan.customerType === customerType && plan.productSlug === productSlug,
+  );
+
+  function handleCustomerTypeChange(nextCustomerType: string) {
+    const nextProducts = plans.filter((plan) => plan.customerType === nextCustomerType);
+    const nextProductSlug = nextProducts[0]?.productSlug ?? "";
+    const nextPlans = nextProducts.filter((plan) => plan.productSlug === nextProductSlug);
+
+    setCustomerType(nextCustomerType);
+    setProductSlug(nextProductSlug);
+    setPlanId(nextPlans[0]?.id ?? "");
+  }
+
+  function handleProductChange(nextProductSlug: string) {
+    const nextPlans = plans.filter(
+      (plan) => plan.customerType === customerType && plan.productSlug === nextProductSlug,
+    );
+
+    setProductSlug(nextProductSlug);
+    setPlanId(nextPlans[0]?.id ?? "");
+  }
+
   return (
     <div className="panel panel--form">
       <div className="panel-heading">
@@ -32,7 +79,7 @@ export function ClientForm({ plans }: { plans: Plan[] }) {
         <div className="form-row">
           <label>
             Email
-            <input name="email" type="email" placeholder="ventas@agencia.com" required />
+            <input name="email" type="email" placeholder="ventas@empresa.com" required />
           </label>
           <label>
             Teléfono
@@ -51,9 +98,44 @@ export function ClientForm({ plans }: { plans: Plan[] }) {
         </div>
         <div className="form-row">
           <label>
+            Tipo de cliente
+            <select
+              name="customerType"
+              value={customerType}
+              onChange={(event) => handleCustomerTypeChange(event.target.value)}
+            >
+              {customerTypes.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Producto
+            <select
+              name="productSlug"
+              value={productSlug}
+              onChange={(event) => handleProductChange(event.target.value)}
+            >
+              {productOptions.map((product) => (
+                <option key={product.productSlug} value={product.productSlug}>
+                  {product.productName}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-row">
+          <label>
             Plan contratado
-            <select name="planId" required defaultValue={plans[0]?.id}>
-              {plans.map((plan) => (
+            <select
+              name="planId"
+              required
+              value={planId}
+              onChange={(event) => setPlanId(event.target.value)}
+            >
+              {filteredPlans.map((plan) => (
                 <option key={plan.id} value={plan.id}>
                   {plan.name} · {formatCurrency(plan.licensePriceCents)} · soporte{" "}
                   {formatCurrency(plan.supportPriceCents)}

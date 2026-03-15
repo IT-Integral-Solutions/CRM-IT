@@ -1,0 +1,44 @@
+CRM-IT - Requisitos de entorno
+
+Sistema operativo soportado:
+- Windows 10 u 11
+- macOS
+
+Software necesario para ejecutar el CRM en desarrollo:
+1. Node.js 24.x
+   Descarga sugerida: https://nodejs.org/
+   Verificar con: node -v
+
+2. npm 11.x
+   Verificar con: npm -v
+
+3. Git
+   Descarga sugerida: https://git-scm.com/downloads
+   Verificar con: git --version
+
+4. Visual Studio Code (opcional pero recomendado)
+   Descarga sugerida: https://code.visualstudio.com/
+
+Pasos iniciales en una PC nueva:
+1. Clonar el repositorio:
+   git clone https://github.com/IT-Integral-Solutions/CRM-IT.git
+
+2. Entrar al proyecto:
+   cd CRM-IT
+
+3. Instalar dependencias:
+   npm install
+
+4. Preparar la base local:
+   npm run db:seed
+
+5. Ejecutar el servidor:
+   npm run dev
+
+6. Abrir en el navegador:
+   http://localhost:3000
+
+Notas:
+- La base local se guarda en la carpeta storage/.
+- Este proyecto hoy usa SQLite local para desarrollo.
+- Si se migra a PostgreSQL en producción, este archivo debe actualizarse.

@@ -14,6 +14,7 @@ type Client = {
   deliveryAmountCents: number;
   deliveryPaidAt: Date | null;
   plan: {
+    productName: string;
     name: string;
     supportPriceCents: number;
   };
@@ -25,7 +26,7 @@ type Client = {
 
 export function ClientTable({
   clients,
-  title = "Base operativa de TASS",
+  title = "Base operativa de clientes y productos",
 }: {
   clients: Client[];
   title?: string;
@@ -61,8 +62,10 @@ export function ClientTable({
                 <span>{client.primaryContact}</span>
               </div>
               <div>
-                <strong>{client.plan.name}</strong>
-                <span>{client.email}</span>
+                <strong>{client.plan.productName}</strong>
+                <span>
+                  {client.plan.name} · {client.email}
+                </span>
               </div>
               <div>
                 <strong>{formatCurrency(client.setupAmountCents)}</strong>

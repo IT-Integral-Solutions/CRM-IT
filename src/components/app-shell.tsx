@@ -16,8 +16,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="brand-link brand-link--three" />
           </div>
           <div>
-            <p className="brand-overline">IT-Integral Solutions</p>
-            <strong>TASS CRM</strong>
+            <p className="brand-overline">IT Integral Solution</p>
+            <strong>Sistema de Administracion y Gestion</strong>
           </div>
         </div>
         <SidebarNav />
@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <header className="topbar">
           <div>
             <p className="section-kicker">Panel interno</p>
-            <h1 className="topbar-title">Gestión comercial y soporte de TASS</h1>
+            <h1 className="topbar-title">Sistema de Administracion y Gestion</h1>
           </div>
           <div className="topbar-chip">
             <DatabaseZap size={16} />

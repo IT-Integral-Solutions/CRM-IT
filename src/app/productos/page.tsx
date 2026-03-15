@@ -9,10 +9,11 @@ export default async function ProductosPage() {
     <main className="crm-shell">
       <section className="page-intro panel">
         <span className="section-kicker">Productos</span>
-        <h2>Desempeño comercial por paquete</h2>
+        <h2>Desempeño comercial por producto y paquete</h2>
         <p>
-          Vista orientada a entender cuántos clientes tiene cada versión de TASS, cuánto
-          factura y cuál es el ingreso recurrente potencial del soporte mensual.
+          Vista orientada a entender cuántos clientes tiene cada solución de IT Integral
+          Solution, cuánto factura cada paquete y cuál es el ingreso recurrente potencial
+          del soporte mensual.
         </p>
       </section>
       <MetricsGrid metrics={snapshot.metrics} potentialMrr={snapshot.potentialMrr} />
