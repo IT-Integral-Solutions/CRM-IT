@@ -15,11 +15,13 @@ Tareas realizadas:
 - Se modularizó la interfaz en páginas separadas: dashboard, clientes, soporte y productos.
 - Se agregó una navegación lateral persistente para que el CRM se lea como sistema y no como una única pantalla.
 - Se separaron componentes reutilizables para métricas, productos, clientes, soporte y alta comercial.
+- Se agregó un módulo de pagos separado con métricas de cobranza y vista financiera dedicada.
+- Se implementaron acciones para registrar cobro del 50% inicial y del 50% final de cada cliente.
 - Se validó nuevamente la aplicación con `npm run lint` y `npm run build`.
 
 Pendiente inmediato:
 - Agregar autenticación y perfiles internos.
-- Separar vistas en módulos: clientes, pagos, soporte, productos y reportes.
+- Agregar reportes más completos y filtros transversales entre módulos.
 - Incorporar recordatorios automáticos y alertas persistentes.
 - Definir la migración futura a PostgreSQL con ORM o query builder cuando entren usuarios internos y despliegue productivo.
-- Crear módulo específico de pagos con historial de cobranzas y acciones de edición.
+- Permitir edición y reversión manual de pagos ya registrados.

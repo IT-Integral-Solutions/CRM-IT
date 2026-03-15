@@ -536,6 +536,36 @@ export function createClient(input: {
   );
 }
 
+export function markClientInstallmentPaid(clientId: string, installment: "setup" | "delivery") {
+  const client = db
+    .prepare("SELECT id, setup_paid_at, delivery_paid_at FROM clients WHERE id = ?")
+    .get(clientId) as
+    | {
+        id: string;
+        setup_paid_at: string | null;
+        delivery_paid_at: string | null;
+      }
+    | undefined;
+
+  if (!client) {
+    throw new Error("El cliente no existe.");
+  }
+
+  const column = installment === "setup" ? "setup_paid_at" : "delivery_paid_at";
+  const currentValue = installment === "setup" ? client.setup_paid_at : client.delivery_paid_at;
+
+  if (currentValue) {
+    return;
+  }
+
+  const now = timestamp(new Date());
+  db.prepare(`UPDATE clients SET ${column} = ?, updated_at = ? WHERE id = ?`).run(
+    now,
+    now,
+    clientId,
+  );
+}
+
 export function markSupportInvoicePaid(invoiceId: string) {
   const invoice = db
     .prepare(

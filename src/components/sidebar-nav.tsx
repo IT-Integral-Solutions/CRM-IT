@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Boxes, LifeBuoy, Users2 } from "lucide-react";
+import { BarChart3, Boxes, CreditCard, LifeBuoy, Users2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/", label: "Dashboard", icon: BarChart3 },
   { href: "/clientes", label: "Clientes", icon: Users2 },
+  { href: "/pagos", label: "Pagos", icon: CreditCard },
   { href: "/soporte", label: "Soporte", icon: LifeBuoy },
   { href: "/productos", label: "Productos", icon: Boxes },
 ];

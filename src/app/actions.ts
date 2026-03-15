@@ -2,7 +2,11 @@
 
 import { startOfDay } from "date-fns";
 import { revalidatePath } from "next/cache";
-import { createClient, markSupportInvoicePaid } from "@/lib/database";
+import {
+  createClient,
+  markClientInstallmentPaid,
+  markSupportInvoicePaid,
+} from "@/lib/database";
 
 export async function createClientAction(formData: FormData) {
   const planId = String(formData.get("planId") ?? "");
@@ -44,4 +48,22 @@ export async function markSupportInvoicePaidAction(formData: FormData) {
   markSupportInvoicePaid(invoiceId);
 
   revalidatePath("/");
+  revalidatePath("/soporte");
+  revalidatePath("/pagos");
+  revalidatePath("/clientes");
+}
+
+export async function markClientInstallmentPaidAction(formData: FormData) {
+  const clientId = String(formData.get("clientId") ?? "");
+  const installment = String(formData.get("installment") ?? "");
+
+  if (!clientId || (installment !== "setup" && installment !== "delivery")) {
+    throw new Error("No se recibió un pago válido para registrar.");
+  }
+
+  markClientInstallmentPaid(clientId, installment);
+
+  revalidatePath("/");
+  revalidatePath("/clientes");
+  revalidatePath("/pagos");
 }

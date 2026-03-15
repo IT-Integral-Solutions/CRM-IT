@@ -93,12 +93,64 @@ export function getCrmSnapshot() {
     };
   });
 
+  const paymentRows = clients.map((client) => {
+    const openSupportInvoice = client.supportInvoices[0] ?? null;
+
+    return {
+      id: client.id,
+      businessName: client.businessName,
+      primaryContact: client.primaryContact,
+      planName: client.plan.name,
+      setupAmountCents: client.setupAmountCents,
+      setupPaidAt: client.setupPaidAt,
+      deliveryAmountCents: client.deliveryAmountCents,
+      deliveryPaidAt: client.deliveryPaidAt,
+      supportAmountCents: client.plan.supportPriceCents,
+      supportDueAt: openSupportInvoice?.dueAt ?? client.supportNextDueAt,
+      supportPaidAt: openSupportInvoice?.paidAt ?? null,
+      supportStatus: openSupportInvoice
+        ? getSupportHealth(openSupportInvoice.dueAt, openSupportInvoice.paidAt)
+        : { label: "Sin ciclo", tone: "dueSoon" as const },
+    };
+  });
+
+  const payments = paymentRows.reduce(
+    (acc, payment) => {
+      acc.totalSetup += payment.setupAmountCents;
+      acc.totalDelivery += payment.deliveryAmountCents;
+
+      if (payment.setupPaidAt) {
+        acc.collectedSetup += payment.setupAmountCents;
+      } else {
+        acc.pendingSetup += payment.setupAmountCents;
+      }
+
+      if (payment.deliveryPaidAt) {
+        acc.collectedDelivery += payment.deliveryAmountCents;
+      } else {
+        acc.pendingDelivery += payment.deliveryAmountCents;
+      }
+
+      return acc;
+    },
+    {
+      totalSetup: 0,
+      totalDelivery: 0,
+      collectedSetup: 0,
+      collectedDelivery: 0,
+      pendingSetup: 0,
+      pendingDelivery: 0,
+    },
+  );
+
   return {
     plans,
     clients,
     invoices,
     metrics,
     planStats,
+    paymentRows,
+    payments,
     potentialMrr: planStats.reduce((sum, plan) => sum + plan.monthlyRecurring, 0),
   };
 }
