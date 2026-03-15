@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Exo_2, Rajdhani, Syne } from "next/font/google";
+import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 
 const exo = Exo_2({
@@ -31,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${exo.variable} ${rajdhani.variable} ${syne.variable}`}>
-        {children}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

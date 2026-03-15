@@ -12,10 +12,14 @@ Tareas realizadas:
 - Se construyó un dashboard inicial con branding de IT-Integral Solutions.
 - Se implementó un alta de cliente con creación automática del primer ciclo de soporte.
 - Se implementó una acción para marcar pagos mensuales de soporte y generar el siguiente vencimiento.
+- Se modularizó la interfaz en páginas separadas: dashboard, clientes, soporte y productos.
+- Se agregó una navegación lateral persistente para que el CRM se lea como sistema y no como una única pantalla.
+- Se separaron componentes reutilizables para métricas, productos, clientes, soporte y alta comercial.
+- Se validó nuevamente la aplicación con `npm run lint` y `npm run build`.
 
 Pendiente inmediato:
-- Conectar el remoto de GitHub y hacer el primer commit/push.
 - Agregar autenticación y perfiles internos.
 - Separar vistas en módulos: clientes, pagos, soporte, productos y reportes.
 - Incorporar recordatorios automáticos y alertas persistentes.
 - Definir la migración futura a PostgreSQL con ORM o query builder cuando entren usuarios internos y despliegue productivo.
+- Crear módulo específico de pagos con historial de cobranzas y acciones de edición.
